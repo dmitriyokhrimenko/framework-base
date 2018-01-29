@@ -1,4 +1,6 @@
 <?php
+
+namespace vendor\core;
 /**
  * Created by PhpStorm.
  * User: pc
@@ -6,14 +8,10 @@
  * Time: 22:11
  */
 
+use vendor\core\base\Controller;
+
 class Router
 {
-
-//    public function __construct()
-//    {
-//        echo "Hello!!!";
-//    }
-
     protected static $routes = [];
     protected static $route = [];
 
@@ -48,6 +46,7 @@ class Router
                 if(!isset($route['action'])){
                     $route['action'] = 'index';
                 }
+                $route['controller'] = self::upperCamelCase($route['controller']);
                 self::$route = $route;
                 return true;
             }
@@ -57,18 +56,20 @@ class Router
 
     public static function dispatch($url)
     {
+        $url = self::removeQueryString($url);
         if(self::matchRoute($url)){
-            $controller = self::upperCamelCase(self::$route['controller']);
+            $controller = 'app\controllers\\' . self::upperCamelCase(self::$route['controller']);
             if (class_exists($controller)){
-                $cObj = new $controller;
+                $cObj = new $controller(self::$route);
                 $action = self::lowerCamelCase(self::$route['action']).'Action';
-                debug($action);
+
                 if(method_exists($cObj, $action)){
                     $cObj->$action();
+                    $cObj->getView();
                 }
-                else echo "Action <i><b>$action</b></i> isn`t allow at Controller <i><b>$controller</b></i>";
+                else echo "<div style='background-color: crimson'>Action <i><b>$action</b></i> isn`t allow at Controller <i><b>$controller</b></i></div>";
             }
-            else  echo "Controller <b>$controller</b> not found";
+            else  echo "<div style='background-color: firebrick'>Controller <b>$controller</b> not found</div>";
         }
         else{
             http_response_code(404);
@@ -84,5 +85,18 @@ class Router
     protected static function lowerCamelCase($method)
     {
         return lcfirst(self::upperCamelCase($method));
+    }
+
+    protected static function removeQueryString($url)
+    {
+        if ($url){
+            $params = explode('&', $url);
+                if (strpos($params[0], '=') === false){
+                    return rtrim($params[0], '/');
+                }
+                else{
+                    return '';
+                }
+        }
     }
 }

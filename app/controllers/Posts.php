@@ -6,11 +6,15 @@
  * Time: 21:00
  */
 
-class Posts
+namespace app\controllers;
+
+class Posts extends App
 {
-    public function index()
+
+    public function indexAction()
     {
-        $controller = explode('::',__METHOD__);
-        echo 'Action: ' . $controller[1] . '</br>Controller: ' . __CLASS__;
+    }
+    public function testAction()
+    {
     }
 }
