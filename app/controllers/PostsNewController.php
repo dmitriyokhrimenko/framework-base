@@ -3,18 +3,26 @@
  * Created by PhpStorm.
  * User: pc
  * Date: 23.01.2018
- * Time: 21:00
+ * Time: 21:17
  */
 
 namespace app\controllers;
 
-class Posts extends App
+class PostsNewController extends AppController
 {
-
     public function indexAction()
     {
     }
+
     public function testAction()
+    {
+    }
+
+    public function testPageAction()
+    {
+    }
+
+    public function before()
     {
     }
 }

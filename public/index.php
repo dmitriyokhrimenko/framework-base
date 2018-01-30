@@ -18,11 +18,8 @@ define('ROOT', dirname(__DIR__));
 define('APP', dirname(__DIR__) . '/app');
 define('LAYOUT', 'default');
 
-//require '../vendor/core/Router.php';
 require '../vendor/libs/functions.php';
-//require '../app/controllers/Main.php';
-//require '../app/controllers/Posts.php';
-//require '../app/controllers/PostsNew.php';
+
 
 spl_autoload_register(function ($class){
     $file = ROOT . '/' . str_replace('\\', '/', $class) . '.php';
